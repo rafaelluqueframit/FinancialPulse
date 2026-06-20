@@ -174,9 +174,9 @@ estacionales complejos.
 
 El modelo descompone la serie temporal en distintos componentes, como tendencia,
 estacionalidad y efectos periódicos. A diferencia de otros enfoques más
-clásicos, como ARIMA, Prophet no requiere que la serie sea estacionaria ni que
-los datos estén perfectamente completos, lo que facilita bastante su uso en
-aplicaciones reales.
+clásicos, como ARIMA @arima2026, Prophet no requiere que la serie sea
+estacionaria ni que los datos estén perfectamente completos, lo que facilita
+bastante su uso en aplicaciones reales.
 
 En FinancialPulse se utiliza para generar predicciones del precio de cierre de
 un activo durante los próximos 30 días a partir de datos históricos del último

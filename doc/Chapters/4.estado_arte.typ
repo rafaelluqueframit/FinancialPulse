@@ -19,13 +19,13 @@ acercan, aunque sea parcialmente, a lo que pretendía construir.
 
 === Yahoo Finance
 
-Yahoo Finance es una de las plataformas más veteranas y conocidas en el mundo de
-las finanzas. Lleva muchísimos años ofreciendo datos en tiempo real de acciones,
-índices, divisas y criptomonedas. También incluye noticias, gráficos básicos y
-algunos indicadores técnicos como medias móviles o RSI. La versión gratuita es
-bastante completa, aunque existe una modalidad de pago (Premium) con algunas
-funcionalidades adicionales. En el siguiente enlace se puede acceder a su página
-web:
+Yahoo Finance @yahoo-finance es una de las plataformas más veteranas y conocidas
+en el mundo de las finanzas. Lleva muchísimos años ofreciendo datos en tiempo
+real de acciones, índices, divisas y criptomonedas. También incluye noticias,
+gráficos básicos y algunos indicadores técnicos como medias móviles o RSI. La
+versión gratuita es bastante completa, aunque existe una modalidad de pago
+(Premium) con algunas funcionalidades adicionales. En el siguiente enlace se
+puede acceder a su página web:
 https://es.finance.yahoo.com/
 
 En términos generales, comparte con FinancialPulse la posibilidad de consultar
@@ -40,8 +40,8 @@ pensada en el usuario.
 
 === Investing.com
 
-Investing.com es otra plataforma muy popular, utilizada por millones de
-personas. Destaca sobre todo por la enorme cantidad de activos que cubre, sus
+Investing.com @investing es otra plataforma muy popular, utilizada por millones
+de personas. Destaca sobre todo por la enorme cantidad de activos que cubre, sus
 gráficos interactivos bastante completos y una sección de noticias y calendario
 económico muy extensa. Tiene una versión gratuita con publicidad y una versión
 Pro de pago con más funcionalidades. En el siguiente enlace se puede acceder a
@@ -78,12 +78,12 @@ muy justa para según qué cosas.
 
 === Bloomberg Terminal
 
-La Bloomberg Terminal es el estándar de oro en el sector financiero profesional.
-Es la herramienta que usan los grandes fondos de inversión, bancos de inversión
-y profesionales del sector. Ofrece datos en tiempo real, análisis fundamental y
-técnico, noticias, mensajería entre usuarios y un montón de herramientas
-avanzadas. El problema es su precio: es carísima, completamente fuera del
-alcance de un estudiante o de un inversor particular.
+La Bloomberg Terminal @bloomberg es el estándar de oro en el sector financiero
+profesional. Es la herramienta que usan los grandes fondos de inversión, bancos
+de inversión y profesionales del sector. Ofrece datos en tiempo real, análisis
+fundamental y técnico, noticias, mensajería entre usuarios y un montón de
+herramientas avanzadas. El problema es su precio: es carísima, completamente
+fuera del alcance de un estudiante o de un inversor particular.
 
 Aunque comparte con FinancialPulse el enfoque en análisis financiero y datos en
 tiempo real, está orientada a un entorno profesional muy exigente. No tiene un
@@ -94,11 +94,11 @@ es un coche normal.
 
 === eToro
 
-eToro es una plataforma de trading social que se ha hecho muy popular. Permite
-invertir en acciones, criptomonedas y otros activos, pero su característica más
-diferencial es el copy trading: puedes copiar automáticamente las operaciones de
-otros inversores. También ofrece una cuenta demo con dinero virtual para
-practicar sin riesgo.
+eToro @etoro es una plataforma de trading social que se ha hecho muy popular.
+Permite invertir en acciones, criptomonedas y otros activos, pero su
+característica más diferencial es el copy trading: puedes copiar automáticamente
+las operaciones de otros inversores. También ofrece una cuenta demo con dinero
+virtual para practicar sin riesgo.
 
 La similitud con FinancialPulse está sobre todo en la posibilidad de operar con
 dinero ficticio. Sin embargo, eToro no ofrece un análisis técnico profundo, no
@@ -109,11 +109,11 @@ trading social que al análisis educativo o técnico.
 
 === Robinhood
 
-Robinhood es una aplicación de inversión muy famosa en Estados Unidos, sobre
-todo por su simplicidad y por la ausencia de comisiones. Permite comprar y
-vender acciones, ETFs y criptomonedas con una interfaz bastante intuitiva. El
-problema es que apenas está disponible fuera de EE. UU. y sus herramientas de
-análisis técnico son muy limitadas.
+Robinhood @robinhood es una aplicación de inversión muy famosa en Estados
+Unidos, sobre todo por su simplicidad y por la ausencia de comisiones. Permite
+comprar y vender acciones, ETFs y criptomonedas con una interfaz bastante
+intuitiva. El problema es que apenas está disponible fuera de EE. UU. y sus
+herramientas de análisis técnico son muy limitadas.
 
 En comparación con FinancialPulse, comparte la idea de una interfaz sencilla y
 accesible. Pero no incluye simulación con dinero ficticio, ni análisis de

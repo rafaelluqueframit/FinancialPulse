@@ -110,7 +110,7 @@ específico.
 
     [OB-5: Análisis de sentimiento de noticias],
     [Completo],
-    [FinBERT para inglés y modelo específico para español.],
+    [FinBERT para EN y modelo específico para ES.],
 
     [OB-6: Cartera virtual],
     [Completo],
@@ -128,6 +128,14 @@ específico.
     [OB-9: Despliegue con contenedores Docker],
     [Completo],
     [docker-compose.yml funcional para desarrollo y producción.],
+
+    [OB-10: Documentación exhaustiva],
+    [Completo],
+    [Memoria, manual de usuario y apéndices.],
+
+    [OB-11: Publicación en URL pública],
+    [Completo],
+    [Se optó por ngrok, que proporciona una URL pública estable y gratuita.],
   ),
   caption: [Estado de cumplimiento de los objetivos específicos.],
 ) <tabla:objetivos>

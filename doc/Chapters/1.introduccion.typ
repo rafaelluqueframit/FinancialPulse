@@ -12,18 +12,18 @@ económicas o incluso operar desde el móvil con apenas unos clics, gracias a la
 plataformas digitales.
 
 A pesar de ello, muchas de las plataformas más conocidas siguen sin estar
-pensadas para usuarios que empiezan desde cero. *Yahoo Finance*, por ejemplo,
-ofrece datos gratuitos y una interfaz relativamente sencilla, pero carece de
-herramientas avanzadas como una cartera virtual para simular inversiones,
-análisis de sentimiento de noticias o predicciones basadas en machine learning.
-*Investing.com* es muy completa, pero su enorme cantidad de información puede
-resultar abrumadora para un usuario novel, y tampoco permite practicar sin
-riesgo real. Por otro lado, *Bloomberg Terminal*, es el estándar de oro en el
-sector profesional, pero su coste es prohibitivo (miles de euros al mes) y su
-complejidad la hace inaccesible para estudiantes o pequeños inversores. En
-resumen, la mayoría de estas plataformas o bien son de pago, o bien ofrecen una
-interfaz demasiado densa, o carecen de funcionalidades educativas como la
-simulación sin riesgo.
+pensadas para usuarios que empiezan desde cero. *Yahoo Finance* @yahoo-finance,
+por ejemplo, ofrece datos gratuitos y una interfaz relativamente sencilla, pero
+carece de herramientas avanzadas como una cartera virtual para simular
+inversiones, análisis de sentimiento de noticias o predicciones basadas en
+machine learning. *Investing.com* @investing-com es muy completa, pero su enorme
+cantidad de información puede resultar abrumadora para un usuario novel, y
+tampoco permite practicar sin riesgo real. Por otro lado, *Bloomberg Terminal*
+@bloomberg, es el estándar de oro en el sector profesional, pero su coste es
+prohibitivo (miles de euros al mes) y su complejidad la hace inaccesible para
+estudiantes o pequeños inversores. En resumen, la mayoría de estas plataformas o
+bien son de pago, o bien ofrecen una interfaz demasiado densa, o carecen de
+funcionalidades educativas como la simulación sin riesgo.
 
 Esta situación afecta especialmente a estudiantes, pequeños ahorradores o, en
 general, a personas interesadas en comprender cómo funciona el mercado sin poner
@@ -41,25 +41,25 @@ manera segura antes de invertir dinero real.
 Entre las fuentes de datos financieros disponibles, se optó por *Yahoo Finance*
 por varias razones: ofrece acceso gratuito a datos históricos y en tiempo real
 de acciones, criptomonedas, índices y divisas; dispone de una API bien
-documentada y fácil de integrar mediante la librería `yfinance` en Python; y, a
-pesar de sus limitaciones, cubre los requisitos básicos para un proyecto
-académico de este tipo. Además, su popularidad y la abundancia de ejemplos en la
-comunidad facilitaron el desarrollo.
+documentada y fácil de integrar mediante la librería `yfinance` @yfinance2024 en
+Python @python2026; y, a pesar de sus limitaciones, cubre los requisitos básicos
+para un proyecto académico de este tipo. Además, su popularidad y la abundancia
+de ejemplos en la comunidad facilitaron el desarrollo.
 
 Combinando los datos aportados por la API de Yahoo Finance con técnicas de
-machine learning —como modelos de predicción de series temporales (Prophet) y
-análisis de sentimiento sobre noticias financieras (FinBERT y un modelo
-específico para español)— se ha podido ir mucho más allá de lo que ofrecen estas
-plataformas por sí solas. De hecho, el machine learning permite extraer patrones
-y tendencias que a simple vista pasan desapercibidos, y también ayuda a
-interpretar el estado de ánimo del mercado a través de las noticias. Esto
-convierte a FinancialPulse en una herramienta que no solo muestra datos, sino
-que intenta aportar valor añadido al inversor.
+machine learning —como modelos de predicción de series temporales (Prophet
+@prophet2026) y análisis de sentimiento sobre noticias financieras (FinBERT
+@finbert2023 y un modelo específico para español)— se ha podido ir mucho más
+allá de lo que ofrecen estas plataformas por sí solas. De hecho, el machine
+learning permite extraer patrones y tendencias que a simple vista pasan
+desapercibidos, y también ayuda a interpretar el estado de ánimo del mercado a
+través de las noticias. Esto convierte a FinancialPulse en una herramienta que
+no solo muestra datos, sino que intenta aportar valor añadido al inversor.
 
-Otras alternativas como Alpha Vantage o IEX Cloud también se tuvieron en
-consideración, pero debido a sus restricciones de tasa y la necesidad de clave
-de API con límites reducidos las hicieron menos atractivas para este proyecto el
-cual busca simplicidad y a coste cero.
+Otras alternativas como Alpha Vantage @alphavantage o IEX Cloud @iexcloud
+también se tuvieron en consideración, pero debido a sus restricciones de tasa y
+la necesidad de clave de API con límites reducidos las hicieron menos atractivas
+para este proyecto el cual busca simplicidad y a coste cero.
 
 Por otro lado, este trabajo surge precisamente de la intención de combinar los
 conocimientos que he adquirido durante el Doble Grado en Ingeniería Informática
@@ -144,6 +144,14 @@ específicos que cubren las distintas funcionalidades de la plataforma:
   idioma seleccionado.
 + OB-9: Empaquetar la aplicación utilizando contenedores Docker @docker2026 con
   el objetivo de facilitar su despliegue en distintos entornos.
++ OB-10: Documentar el proyecto de manera exhaustiva, incluyendo la memoria
+  técnica, diagramas, manual de usuario y apéndices con ejemplos de despliegue y
+  uso.
++ OB-11: Publicar la aplicación en una URL pública accesible desde cualquier
+  dispositivo sin necesidad de instalación, evaluando diferentes alternativas de
+  despliegue gratuito (Render @render2026, Oracle Cloud @oraclecloud2026, GitHub
+  Pages @githubpages2026) y seleccionando la más adecuada para el contexto de
+  una presentación académica, que en este caso ha sido ngrok @ngrok2026.
 
 == Estructura de la memoria
 
@@ -154,7 +162,7 @@ concreta del proyecto:
   nociones financieras y tecnológicas necesarias para comprender el resto del
   trabajo. Entre otros temas, se explican conceptos relacionados con activos
   financieros, indicadores técnicos, aplicaciones SPA, APIs REST @rest2000,
-  modelos Prophet y Transformers.
+  modelos Prophet @prophet2026 y Transformers @transformers2026 .
 
 - *Capítulo 3: Estado del arte*. Se analizan algunas de las plataformas
   financieras más conocidas, como Yahoo Finance, TradingView o Investing.com,

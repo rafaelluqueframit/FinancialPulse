@@ -374,6 +374,45 @@ que los datos de PostgreSQL persistan aunque se paren los contenedores.
 En el apéndice incluyo un manual de despliegue más detallado, por si alguien
 quiere montar la aplicación en su propio equipo.
 
+=== Opciones de despliegue evaluadas y decisión final
+
+Durante el desarrollo se exploraron varias alternativas para poner la aplicación
+a disposición del tribunal de forma pública y gratuita. La primera opción
+considerada fue *Render* @render2026, una plataforma PaaS que permite desplegar
+aplicaciones web con facilidad. Sin embargo, tras varios intentos, la
+configuración daba errores en el proceso de construcción del frontend (problemas
+con la ruta de _package.json_ y el directorio de publicación), y la base de
+datos gratuita se duerme tras 15 minutos de inactividad, lo que no es adecuado
+para una presentación académica.
+
+La segunda opción fue *Oracle Cloud Free Tier* @oraclecloud2026, que ofrece una
+máquina virtual ARM con recursos generosos (hasta 4 OCPU y 24 GB RAM) de forma
+gratuita y permanente. No obstante, al intentar crear la instancia, se recibió
+el error "Out of capacity for shape VM.Standard.A1.Flex", indicando que no había
+disponibilidad en la región de Madrid en ese momento. A pesar de probar con
+otros availability domains y con el shape AMD alternativo, no fue posible
+obtener una VM funcional.
+
+También se valoró *GitHub Pages* @githubpages2026, pero se descartó rápidamente
+porque está diseñado exclusivamente para páginas web estáticas. No puede
+ejecutar un backend en Flask ni una base de datos PostgreSQL, por lo que no es
+compatible con la arquitectura de FinancialPulse.
+
+Finalmente, se optó por *ngrok* @ngrok2026, una herramienta que crea túneles
+HTTPS públicos hacia un servidor local. Esta solución es gratuita (con límites
+de uso mensual suficientes para una presentación), no requiere configuración
+compleja, y la URL pública es estable y no cambia al reiniciar el túnel. Con
+ngrok, los profesores pueden acceder a la aplicación ejecutándose en el
+ordenador del desarrollador sin necesidad de instalar nada. La aplicación puede
+iniciarse tanto con Docker (_docker-compose up_) como con comandos separados
+para el backend (_python app.py_) y el frontend (_ng serve --host 0.0.0.0 --port
+4200_).
+
+La URL pública generada por ngrok es
+https://subtext-anteater-consoling.ngrok-free.dev, que se ha incluido en el
+apéndice junto con un código QR para facilitar el acceso desde dispositivos
+móviles.
+
 == Conclusión
 
 Las herramientas que se seleccionaron permitieron cubrir todos los requisitos

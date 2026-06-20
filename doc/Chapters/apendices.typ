@@ -295,6 +295,35 @@ docker exec -it FinancialPulse-db-1 psql -U postgres -d financial_pulse_db
 La contraseña está en el archivo docker-compose.yml. En producción se recomienda
 cambiarla por una segura.
 
+=== D.7. Compartición pública con ngrok
+
+Para que cualquier persona pueda acceder a la aplicación sin necesidad de
+instalar nada, se ha utilizado ngrok. Esta herramienta crea un túnel seguro
+desde el puerto local de la aplicación hasta una URL pública HTTPS. La URL es
+estable y no cambia al reiniciar el túnel, siempre que se use la misma cuenta de
+ngrok.
+
+La URL pública de FinancialPulse durante las pruebas ha sido:
+
+https://subtext-anteater-consoling.ngrok-free.dev
+
+Para acceder, simplemente hay que abrir esta dirección en cualquier navegador.
+La aplicación puede ejecutarse de dos formas:
+
+- *Con Docker*: _docker-compose up --build_ (la aplicación estará en
+  http://localhost).
+
+- *Sin Docker*: backend con _python app.py_ y frontend con _ng serve --host
+  0.0.0.0_ _--port 4200_.
+
+A continuación se muestra un código QR que dirige directamente a la URL pública,
+para facilitar el acceso desde dispositivos móviles:
+
+#figure(
+  image("../Figures/Template/Apendices/qr.png", width: 70%),
+  caption: [Código QR de acceso a la URL pública de FinancialPulse.],
+) <fig:qr>
+
 == E. Código fuente
 
 El código completo está en GitHub:
