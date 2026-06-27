@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import random
 import traceback
+import math
 
 # ====================
 # Inicialización de la app
@@ -360,6 +361,23 @@ def calcular_posicion_actual(usuario_id):
     posicion = {simbolo: cant for simbolo, cant in posicion.items() if cant > 0}
     return posicion
 
+def limpiar_nan(obj):
+    if isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+        return obj
+    if isinstance(obj, dict):
+        return {k: limpiar_nan(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [limpiar_nan(v) for v in obj]
+    return obj
+
+def limpiar_historico(df):
+    """Elimina filas con OHLC incompleto (p.ej. la última fila de 'hoy'
+    cuando el mercado está cerrado y Yahoo aún no tiene el cierre real)."""
+    columnas = [c for c in ['Open', 'High', 'Low', 'Close'] if c in df.columns]
+    return df.dropna(subset=columnas)
+
 # ====================
 # Rutas de la API
 # ====================
@@ -374,7 +392,7 @@ def recommendation(simbolo):
         if not simbolo_resuelto:
             return jsonify({'error': 'Símbolo no válido'}), 400
         ticker = yf.Ticker(simbolo_resuelto)
-        hist = ticker.history(period='1y')
+        hist = limpiar_historico(ticker.history(period='1y'))
         if hist.empty:
             return jsonify({'error': 'No hay datos históricos'}), 404
 
@@ -443,7 +461,7 @@ def recommendation(simbolo):
         confianza_ajustada = max(55, min(100, int(confianza_base * 1.2)))
         confianza = confianza_ajustada
 
-        return jsonify({
+        return jsonify(limpiar_nan({
             'simbolo': simbolo.upper(),
             'precio_actual': round(precio_actual, 2),
             'indicadores': {
@@ -469,7 +487,7 @@ def recommendation(simbolo):
             },
             'recomendacion': recomendacion,
             'confianza': confianza
-        })
+        }))
     except Exception as e:
         print(f"Error en recomendación: {e}")
         return jsonify({'error': str(e)}), 500
@@ -596,10 +614,10 @@ def dashboard(simbolo):
         if not simbolo_resuelto:
             return jsonify({'error': 'Símbolo no válido'}), 400
         ticker = yf.Ticker(simbolo_resuelto)
-        hist_mostrar = ticker.history(period=period)
+        hist_mostrar = limpiar_historico(ticker.history(period=period))
         if hist_mostrar.empty:
             return jsonify({'error': f'No hay datos para "{simbolo}" en período {period}'}), 404
-        hist_prediccion = ticker.history(period=period_prediccion)
+        hist_prediccion = limpiar_historico(ticker.history(period=period_prediccion))
         if hist_prediccion.empty:
             hist_prediccion = hist_mostrar
 
@@ -666,7 +684,7 @@ def dashboard(simbolo):
                 'beta': info.get('beta')
             }
 
-        return jsonify({
+        return jsonify(limpiar_nan({
             'simbolo_original': simbolo.upper(),
             'simbolo_resuelto': simbolo_resuelto,
             'nombre': info.get('longName', simbolo) if isinstance(info, dict) else simbolo,
@@ -678,7 +696,7 @@ def dashboard(simbolo):
             'prediccion': prediccion,
             'mape': mape,
             'fundamental': fundamental
-        })
+        }))
     except Exception as e:
         print(f"Error en dashboard para {simbolo}: {e}")
         traceback.print_exc()
