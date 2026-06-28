@@ -1,0 +1,34 @@
+<footer class="bg-gray-800 text-white mt-12 py-8">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-lg font-bold mb-2">FinancialPulse</h3>
+        <p class="text-sm text-gray-400">{{ 'FOOTER_DESCRIPTION' | translate }}</p>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">{{ 'ENLACES_RAPIDOS' | translate }}</h4>
+        <ul class="text-sm space-y-1">
+          <li><a routerLink="/" class="hover:text-blue-400">{{ 'INICIO' | translate }}</a></li>
+          <li><a routerLink="/buscar" class="hover:text-blue-400">{{ 'BUSCAR_SIMBOLO' | translate }}</a></li>
+          <li><a routerLink="/cartera" class="hover:text-blue-400">{{ 'CARTERA' | translate }}</a></li>
+          <li><a routerLink="/noticias" class="hover:text-blue-400">{{ 'NOTICIAS' | translate }}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">{{ 'LEGAL' | translate }}</h4>
+        <ul class="text-sm space-y-1">
+          <li><a routerLink="/terminos" class="hover:text-blue-400">{{ 'TERMINOS_USO' | translate }}</a></li>
+          <li><a routerLink="/privacidad" class="hover:text-blue-400">{{ 'POLITICA_PRIVACIDAD' | translate }}</a></li>
+          <li><a routerLink="/cookies" class="hover:text-blue-400">{{ 'COOKIES' | translate }}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold mb-2">{{ 'CONTACTO' | translate }}</h4>
+        <p class="text-sm text-gray-400">info@financialpulse.com</p>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 mt-6 pt-4 text-center text-sm text-gray-500">
+      &copy; {{ currentYear }} FinancialPulse - {{ 'COPYRIGHT' | translate }}
+    </div>
+  </div>
+</footer>

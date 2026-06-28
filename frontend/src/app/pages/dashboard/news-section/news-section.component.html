@@ -1,0 +1,79 @@
+<div class="mt-8">
+  <h3 class="text-lg font-semibold mb-4">{{ 'NOTICIAS_RELACIONADAS' | translate }}</h3>
+
+  <div class="mb-4 flex gap-4 items-center">
+    <span class="text-sm text-gray-600">{{ 'ORDENAR_POR' | translate }}</span>
+    <button (click)="cambiarOrden('fecha_desc')" 
+            class="text-sm px-3 py-1 rounded"
+            [class.bg-blue-100]="orden === 'fecha_desc'">
+      {{ 'FECHA_RECIENTE' | translate }}
+    </button>
+    <button (click)="cambiarOrden('fecha_asc')"
+            class="text-sm px-3 py-1 rounded"
+            [class.bg-blue-100]="orden === 'fecha_asc'">
+      {{ 'FECHA_ANTIGUO' | translate }}
+    </button>
+    <button (click)="cambiarOrden('sentimiento')"
+            class="text-sm px-3 py-1 rounded"
+            [class.bg-blue-100]="orden === 'sentimiento'">
+      {{ 'SENTIMIENTO' | translate }}
+    </button>
+  </div>
+
+  <div class="flex gap-2 mb-4 flex-wrap">
+    <button (click)="toggleSentimiento('positivo')" 
+            class="px-3 py-1 rounded-full text-sm font-medium transition"
+            [class.bg-green-100]="selectedSentiments.positivo"
+            [class.bg-gray-200]="!selectedSentiments.positivo"
+            [class.text-green-800]="selectedSentiments.positivo"
+            [class.text-gray-500]="!selectedSentiments.positivo">
+      👍 Positivo
+    </button>
+    <button (click)="toggleSentimiento('neutral')" 
+            class="px-3 py-1 rounded-full text-sm font-medium transition"
+            [class.bg-yellow-100]="selectedSentiments.neutral"
+            [class.bg-gray-200]="!selectedSentiments.neutral"
+            [class.text-yellow-800]="selectedSentiments.neutral"
+            [class.text-gray-500]="!selectedSentiments.neutral">
+      😐 Neutral
+    </button>
+    <button (click)="toggleSentimiento('negativo')" 
+            class="px-3 py-1 rounded-full text-sm font-medium transition"
+            [class.bg-red-100]="selectedSentiments.negativo"
+            [class.bg-gray-200]="!selectedSentiments.negativo"
+            [class.text-red-800]="selectedSentiments.negativo"
+            [class.text-gray-500]="!selectedSentiments.negativo">
+      👎 Negativo
+    </button>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="md:col-span-1 bg-white p-4 rounded shadow" *ngIf="resumenSentimiento">
+      <h4 class="text-md font-medium mb-2">{{ 'RESUMEN_SENTIMIENTO' | translate }}</h4>
+      <div echarts [options]="pieChartOption" class="w-full h-64"></div>
+    </div>
+
+    <div class="md:col-span-2 space-y-4">
+      <div *ngFor="let noticia of noticiasOrdenadas" 
+           class="border rounded p-4 hover:shadow transition-shadow"
+           [ngClass]="getSentimientoColor(noticia.sentimiento.sentimiento)">
+        <a [href]="noticia.url" target="_blank" class="text-lg font-medium hover:underline">
+          {{ noticia.titulo }}
+        </a>
+        <p class="text-sm text-gray-600 mt-1">{{ noticia.descripcion }}</p>
+        <div class="flex justify-between items-center mt-2 text-xs">
+          <span class="font-semibold">{{ noticia.fuente }}</span>
+          <span>{{ noticia.fecha }}</span>
+          <span class="px-2 py-1 rounded-full capitalize"
+                [ngClass]="{
+                  'bg-green-200 text-green-800': noticia.sentimiento.sentimiento === 'positivo',
+                  'bg-yellow-200 text-yellow-800': noticia.sentimiento.sentimiento === 'neutral',
+                  'bg-red-200 text-red-800': noticia.sentimiento.sentimiento === 'negativo'
+                }">
+            {{ noticia.sentimiento.sentimiento | translate }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

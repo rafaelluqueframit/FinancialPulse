@@ -1,0 +1,93 @@
+<header class="bg-gray-800 text-white shadow-md">
+  <div class="container mx-auto px-4 py-6 flex flex-wrap justify-between items-center">
+    <!-- Logo + nombre (más grande) -->
+    <a routerLink="/" class="flex items-center">
+      <img src="assets/logo.svg" alt="FinancialPulse" class="h-14 w-auto">
+    </a>
+
+    <!-- Menú principal (escritorio) con texto más grande -->
+    <nav class="hidden md:flex space-x-8 text-lg">
+      <a routerLink="/" class="hover:text-blue-400 transition">{{ 'INICIO' | translate }}</a>
+      <div class="relative group">
+        <button class="hover:text-blue-400 transition flex items-center">
+          {{ 'ANALISIS' | translate }}
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div class="absolute left-0 top-full w-48 bg-white rounded-md shadow-lg py-1 z-20 hidden group-hover:block">
+          <a routerLink="/buscar" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'BUSCAR_SIMBOLO' | translate }}</a>
+          <a routerLink="/favoritos" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'MIS_FAVORITOS' | translate }}</a>
+          <a routerLink="/analisis/ayuda" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'AYUDA_ANALISIS' | translate }}</a>
+        </div>
+      </div>
+      <div class="relative group">
+        <button class="hover:text-blue-400 transition flex items-center">
+          {{ 'CARTERA' | translate }}
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div class="absolute left-0 top-full w-48 bg-white rounded-md shadow-lg py-1 z-20 hidden group-hover:block">
+          <a routerLink="/cartera" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'MI_CARTERA' | translate }}</a>
+          <a routerLink="/cartera/ayuda" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'AYUDA_CARTERA' | translate }}</a>
+        </div>
+      </div>
+      <div class="relative group">
+        <button class="hover:text-blue-400 transition flex items-center">
+          {{ 'NOTICIAS' | translate }}
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div class="absolute left-0 top-full w-48 bg-white rounded-md shadow-lg py-1 z-20 hidden group-hover:block">
+          <a routerLink="/noticias" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'BUSCAR_NOTICIAS' | translate }}</a>
+          <a routerLink="/noticias/ayuda" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'AYUDA_NOTICIAS' | translate }}</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Zona derecha: idioma con banderas + usuario (texto más grande) -->
+    <div class="relative flex items-center space-x-4">
+      <!-- Selector de idioma con banderas -->
+      <div class="flex space-x-2 text-base">
+        <button (click)="setLanguage('es')" 
+                class="px-3 py-1.5 rounded flex items-center space-x-1.5"
+                [class.bg-blue-600]="currentLang === 'es'"
+                [class.text-white]="currentLang === 'es'"
+                [class.bg-gray-200]="currentLang !== 'es'"
+                [class.text-gray-800]="currentLang !== 'es'">
+          <img src="assets/bandera-espana.svg" class="w-5 h-5">
+          <span>ES</span>
+        </button>
+        <button (click)="setLanguage('en')" 
+                class="px-3 py-1.5 rounded flex items-center space-x-1.5"
+                [class.bg-blue-600]="currentLang === 'en'"
+                [class.text-white]="currentLang === 'en'"
+                [class.bg-gray-200]="currentLang !== 'en'"
+                [class.text-gray-800]="currentLang !== 'en'">
+          <img src="assets/bandera-reino-unido.svg" class="w-5 h-5">
+          <span>EN</span>
+        </button>
+      </div>
+
+      <!-- Usuario o login (tamaño ajustado) -->
+      <div *ngIf="user; else loginButton">
+        <button (click)="toggleMenu()" class="flex items-center space-x-2 focus:outline-none text-base">
+          <span class="bg-blue-600 px-3 py-1.5 rounded-full text-sm font-medium">{{ user.nombre.charAt(0).toUpperCase() }}</span>
+          <span>{{ user.nombre }}</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div *ngIf="menuAbierto" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+          <a routerLink="/perfil" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'PERFIL' | translate }}</a>
+          <button (click)="logout()" class="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100">{{ 'CERRAR_SESION' | translate }}</button>
+        </div>
+      </div>
+      <ng-template #loginButton>
+        <a routerLink="/login" class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded transition text-base">{{ 'INICIAR_SESION' | translate }}</a>
+      </ng-template>
+    </div>
+  </div>
+</header>

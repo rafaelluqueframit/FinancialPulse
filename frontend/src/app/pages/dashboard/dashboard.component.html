@@ -1,0 +1,267 @@
+<div class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">
+      {{ data?.nombre }} ({{ data?.simbolo_original }})
+      <button (click)="toggleFavorito()" class="ml-2 focus:outline-none" appTooltip="TOOLTIP_FAVORITO">
+        <span class="text-2xl">{{ esFavorito ? '⭐' : '☆' }}</span>
+      </button>
+    </h1>
+    <div class="flex space-x-2">
+      <!-- <button (click)="toggleChartType()"
+              class="px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300"
+              appTooltip="TOOLTIP_TOGGLE_CHART">
+        {{ chartType === 'line' ? ('VER_VELAS' | translate) : ('VER_LINEAS' | translate) }}
+      </button> -->
+      <button *ngFor="let p of periods"
+              (click)="cambiarPeriodo(p.value)"
+              class="px-3 py-1 rounded text-sm font-medium transition-colors"
+              [class.bg-blue-600]="selectedPeriod === p.value"
+              [class.text-white]="selectedPeriod === p.value"
+              [class.bg-gray-200]="selectedPeriod !== p.value"
+              [appTooltip]="'TOOLTIP_PERIODO_' + p.value.toUpperCase()">
+        {{ p.label }}
+      </button>
+    </div>
+  </div>
+
+  <div class="border-b border-gray-200">
+    <nav class="-mb-px flex space-x-8">
+      <button (click)="activeTab = 'resumen'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'resumen'"
+              [class.text-blue-600]="activeTab === 'resumen'"
+              [class.text-gray-500]="activeTab !== 'resumen'"
+              appTooltip="TOOLTIP_RESUMEN">
+        {{ 'RESUMEN' | translate }}
+      </button>
+      <button (click)="activeTab = 'graficas'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'graficas'"
+              [class.text-blue-600]="activeTab === 'graficas'"
+              [class.text-gray-500]="activeTab !== 'graficas'"
+              appTooltip="TOOLTIP_GRAFICAS">
+        {{ 'GRAFICAS' | translate }}
+      </button>
+      <button (click)="activeTab = 'tecnico'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'tecnico'"
+              [class.text-blue-600]="activeTab === 'tecnico'"
+              [class.text-gray-500]="activeTab !== 'tecnico'"
+              appTooltip="TOOLTIP_ANALISIS_TECNICO">
+        {{ 'ANALISIS_TECNICO' | translate }}
+      </button>
+      <button (click)="activeTab = 'noticias'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'noticias'"
+              [class.text-blue-600]="activeTab === 'noticias'"
+              [class.text-gray-500]="activeTab !== 'noticias'"
+              appTooltip="TOOLTIP_NOTICIAS_Y_SENTIMIENTO">
+        {{ 'NOTICIAS_Y_SENTIMIENTO' | translate }}
+      </button>
+      <button (click)="activeTab = 'historial'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'historial'"
+              [class.text-blue-600]="activeTab === 'historial'"
+              [class.text-gray-500]="activeTab !== 'historial'"
+              appTooltip="TOOLTIP_DATOS_HISTORICOS">
+        {{ 'DATOS_HISTORICOS_TABLA' | translate }}
+      </button>
+      <button (click)="activeTab = 'fundamental'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'fundamental'"
+              [class.text-blue-600]="activeTab === 'fundamental'"
+              [class.text-gray-500]="activeTab !== 'fundamental'"
+              appTooltip="TOOLTIP_FUNDAMENTAL">
+        {{ 'FUNDAMENTAL' | translate }}
+      </button>
+    </nav>
+  </div>
+
+  <div class="mt-6">
+    <!-- FUNDAMENTAL -->
+    <div *ngIf="activeTab === 'fundamental'">
+      <ng-container *ngIf="data && data.fundamental; else noFundamental">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_MARKET_CAP">
+            <p class="text-sm text-gray-500">{{ 'CAPITALIZACION_BURSATIL' | translate }}</p>
+            <p class="text-xl font-bold">{{ (data.fundamental!.marketCap! / 1e9) | number:'1.2-2' }} {{ 'MILES_MILLONES' | translate }}</p>
+          </div>
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_PE">
+            <p class="text-sm text-gray-500">PER (P/E)</p>
+            <p class="text-xl font-bold">{{ data.fundamental!.trailingPE | number:'1.2-2' }}</p>
+          </div>
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_DIVIDEND">
+            <p class="text-sm text-gray-500">{{ 'DIVIDEND_YIELD' | translate }}</p>
+            <p class="text-xl font-bold">{{ (data.fundamental!.dividendYield! * 100) | number:'1.2-2' }}%</p>
+          </div>
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_EPS">
+            <p class="text-sm text-gray-500">{{ 'BENEFICIO_POR_ACCION' | translate }}</p>
+            <p class="text-xl font-bold">{{ data.fundamental!.eps | number:'1.2-2' }} USD</p>
+          </div>
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_BETA">
+            <p class="text-sm text-gray-500">{{ 'BETA' | translate }}</p>
+            <p class="text-xl font-bold">{{ data.fundamental!.beta | number:'1.2-2' }}</p>
+          </div>
+          <div class="bg-white shadow rounded p-4" appTooltip="TOOLTIP_PROFIT_MARGIN">
+            <p class="text-sm text-gray-500">{{ 'MARGEN_BENEFICIO' | translate }}</p>
+            <p class="text-xl font-bold">{{ (data.fundamental!.profitMargins! * 100) | number:'1.2-2' }}%</p>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noFundamental>
+        <div class="text-center text-gray-500 mt-8">{{ 'NO_HAY_DATOS_FUNDAMENTALES' | translate }}</div>
+      </ng-template>
+    </div>
+
+    <!-- GRÁFICAS -->
+    <div *ngIf="activeTab === 'graficas'">
+      <div *ngIf="loading">{{ 'CARGANDO' | translate }}</div>
+      <div *ngIf="error" class="bg-red-100 text-red-700 p-2 rounded mb-4">{{ error }}</div>
+      <div *ngIf="data">
+        <!-- Bloque de ayuda sobre los gráficos -->
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded" appTooltip="TOOLTIP_GRAFICAS_AYUDA">
+          <p class="text-blue-700 text-sm">{{ 'AYUDA_GRAFICAS' | translate }}</p>
+        </div>
+
+        <!-- Selector de vista -->
+        <div class="flex justify-end mb-4 space-x-2">
+          <button (click)="toggleViewType()"
+                  class="px-3 py-1 rounded text-sm font-medium transition-colors"
+                  [class.bg-blue-600]="viewType === 'unified'"
+                  [class.text-white]="viewType === 'unified'"
+                  [class.bg-gray-200]="viewType !== 'unified'"
+                  appTooltip="TOOLTIP_VISTA_UNIFICADA">
+            {{ 'VISTA_UNIFICADA' | translate }}
+          </button>
+          <button (click)="toggleViewType()"
+                  class="px-3 py-1 rounded text-sm font-medium transition-colors"
+                  [class.bg-blue-600]="viewType === 'separated'"
+                  [class.text-white]="viewType === 'separated'"
+                  [class.bg-gray-200]="viewType !== 'separated'"
+                  appTooltip="TOOLTIP_VISTA_SEPARADA">
+            {{ 'VISTA_SEPARADA' | translate }}
+          </button>
+        </div>
+
+        <!-- Gráficos según vista -->
+        <div *ngIf="viewType === 'unified'">
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="text-md font-semibold">{{ 'GRAFICO_UNIFICADO_TITULO' | translate }}</h3>
+            <button (click)="toggleChartType()"
+                    class="px-3 py-1 rounded text-sm font-medium transition-colors bg-gray-200 hover:bg-gray-300"
+                    appTooltip="TOOLTIP_TOGGLE_CHART">
+              {{ chartType === 'line' ? ('VER_VELAS' | translate) : ('VER_LINEAS' | translate) }}
+            </button>
+          </div>
+          <div echarts [options]="chartOption" class="w-full h-96 mb-8"></div>
+          <p class="text-xs text-gray-500 text-center">{{ 'AYUDA_GRAFICO_UNIFICADO' | translate }}</p>
+        </div>
+
+        <div *ngIf="viewType === 'separated'">
+          <div class="mb-8">
+            <h4 class="text-md font-semibold mb-2">{{ 'GRAFICO_HISTORICO' | translate }}</h4>
+            <div echarts [options]="chartHistOption" class="w-full h-96"></div>
+            <p class="text-xs text-gray-500 text-center mt-1">{{ 'AYUDA_GRAFICO_HISTORICO' | translate }}</p>
+          </div>
+          <div class="mb-8">
+            <h4 class="text-md font-semibold mb-2">{{ 'GRAFICO_PREDICCION' | translate }}</h4>
+            <div echarts [options]="chartPredOption" class="w-full h-96"></div>
+            <p class="text-xs text-gray-500 text-center mt-1">{{ 'AYUDA_GRAFICO_PREDICCION' | translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div *ngIf="activeTab === 'resumen'">
+      <div *ngIf="loading">{{ 'CARGANDO' | translate }}</div>
+      <div *ngIf="error" class="bg-red-100 text-red-700 p-2 rounded mb-4">{{ error }}</div>
+      <div *ngIf="data">
+        <div *ngIf="data && data.mape" class="text-sm text-gray-500 mt-2" appTooltip="TOOLTIP_MAPE">
+          📊 {{ 'PRECISION_ESTIMADA' | translate }}: 
+          <span class="font-semibold text-green-600">{{ 100 - data.mape }}%</span>
+          ({{ 'ERROR_MEDIO' | translate }} {{ data.mape }}%)
+        </div>
+        <app-kpi-cards 
+          [historial]="historialParaHijos" 
+          [precioActual]="data.precio_actual" 
+          [moneda]="data.moneda">
+        </app-kpi-cards>
+        <app-performance-table [historial]="historialParaHijos"></app-performance-table>
+
+      </div>
+    </div>
+
+    <!-- TÉCNICO -->
+    <div *ngIf="activeTab === 'tecnico'">
+      <div *ngIf="recommendation" class="bg-white shadow rounded p-4">
+        <h3 class="text-xl font-bold mb-2">{{ 'RECOMENDACION_INVERSION' | translate }}</h3>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-2xl font-bold" [ngClass]="{
+              'text-green-600': recommendation.recomendacion === 'COMPRAR',
+              'text-red-600': recommendation.recomendacion === 'VENDER',
+              'text-yellow-600': recommendation.recomendacion === 'MANTENER'
+            }">{{ recommendation.recomendacion | translate }}</p>
+            <div class="w-48 bg-gray-200 rounded-full h-2.5 my-2" appTooltip="TOOLTIP_CONFIANZA">
+              <div class="bg-green-600 h-2.5 rounded-full" [style.width]="recommendation.confianza + '%'"></div>
+            </div>
+            <p class="text-sm text-gray-500">{{ 'CONFIANZA' | translate }}: {{ recommendation.confianza }}%</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm">{{ 'PRECIO_ACTUAL' | translate }}: {{ recommendation.precio_actual | currency:'USD':'symbol':'1.2-2' }}</p>
+            <p class="text-sm">
+              RSI (14): {{ recommendation.indicadores.rsi }}
+              <span class="ml-1 cursor-help" appTooltip="TOOLTIP_RSI">ⓘ</span>
+            </p>
+            <p class="text-sm">
+              {{ 'ESTOCASTICO' | translate }} %K: {{ recommendation.indicadores.stoch_k }}
+              <span class="ml-1 cursor-help" appTooltip="TOOLTIP_ESTOCASTICO">ⓘ</span>
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 pt-4 border-t border-gray-200">
+          <div>
+            <p class="font-semibold">{{ 'INDICADORES_TECNICOS' | translate }}</p>
+            <ul class="text-sm space-y-1">
+              <li><span appTooltip="TOOLTIP_MACD">MACD: {{ recommendation.indicadores.macd_line }} / {{ recommendation.indicadores.macd_signal }}</span></li>
+              <li><span appTooltip="TOOLTIP_SMA">SMA20: {{ recommendation.indicadores.sma_20 }} | SMA50: {{ recommendation.indicadores.sma_50 }}</span></li>
+              <li><span appTooltip="TOOLTIP_BOLLINGER">{{ 'BOLLINGER_SUPERIOR' | translate }}: {{ recommendation.indicadores.bb_upper }}</span></li>
+              <li><span appTooltip="TOOLTIP_BOLLINGER">{{ 'BOLLINGER_INFERIOR' | translate }}: {{ recommendation.indicadores.bb_lower }}</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold">{{ 'SOPORTES_RESISTENCIAS' | translate }}</p>
+            <ul class="text-sm space-y-1">
+              <li><span appTooltip="TOOLTIP_SOPORTE_RESISTENCIA">{{ 'SOPORTE_CERCANO' | translate }}: {{ recommendation.soportes_resistencias.soporte_cercano || 'N/A' }}</span></li>
+              <li><span appTooltip="TOOLTIP_SOPORTE_RESISTENCIA">{{ 'RESISTENCIA_CERCANA' | translate }}: {{ recommendation.soportes_resistencias.resistencia_cercana || 'N/A' }}</span></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-semibold">{{ 'BACKTEST' | translate }}</p>
+            <ul class="text-sm space-y-1">
+              <li><span appTooltip="TOOLTIP_BACKTEST">{{ 'RETORNO_TOTAL' | translate }}: {{ recommendation.backtest.retorno_total }}%</span></li>
+              <li><span appTooltip="TOOLTIP_BACKTEST">{{ 'OPERACIONES' | translate }}: {{ recommendation.backtest.num_operaciones }}</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!recommendation && !loading" class="text-center text-gray-500 mt-8">
+        {{ 'CARGANDO_ANALISIS_TECNICO' | translate }}
+      </div>
+    </div>
+
+    <!-- NOTICIAS -->
+    <div *ngIf="activeTab === 'noticias'">
+      <app-news-section 
+        [noticias]="data?.noticias || []" 
+        [resumenSentimiento]="data?.resumen_sentimiento || null">
+      </app-news-section>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div *ngIf="activeTab === 'historial'">
+      <app-historical-table [data]="historialParaHijos"></app-historical-table>
+    </div>
+  </div>
+</div>

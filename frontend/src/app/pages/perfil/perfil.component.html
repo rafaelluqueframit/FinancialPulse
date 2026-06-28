@@ -1,0 +1,87 @@
+<div class="p-4 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">{{ 'PERFIL' | translate }}</h2>
+
+  <!-- Pestañas -->
+  <div class="border-b border-gray-200 mb-6">
+    <nav class="-mb-px flex space-x-8">
+      <button (click)="activeTab = 'info'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'info'"
+              [class.text-blue-600]="activeTab === 'info'"
+              [class.text-gray-500]="activeTab !== 'info'">
+        {{ 'PERFIL_INFO' | translate }}
+      </button>
+      <button (click)="activeTab = 'privacidad'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'privacidad'"
+              [class.text-blue-600]="activeTab === 'privacidad'"
+              [class.text-gray-500]="activeTab !== 'privacidad'">
+        {{ 'PRIVACIDAD_DATOS' | translate }}
+      </button>
+    </nav>
+  </div>
+
+  <!-- Contenido según pestaña -->
+  <div *ngIf="activeTab === 'info'">
+    <div *ngIf="mensaje" class="bg-green-100 text-green-700 p-3 rounded mb-4">{{ mensaje }}</div>
+    <div *ngIf="error" class="bg-red-100 text-red-700 p-3 rounded mb-4">{{ error }}</div>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-6">
+      <!-- Datos personales -->
+      <div class="bg-white shadow rounded p-6">
+        <h3 class="text-lg font-semibold border-b pb-2 mb-4">{{ 'DATOS_PERSONALES' | translate }}</h3>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">{{ 'NOMBRE' | translate }}</label>
+          <input type="text" [(ngModel)]="user.nombre" name="nombre" 
+                 class="w-full border p-2 rounded mt-1" required
+                 appTooltip="TOOLTIP_NOMBRE">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">{{ 'EMAIL' | translate }}</label>
+          <input type="email" [(ngModel)]="user.email" name="email" 
+                 class="w-full border p-2 rounded mt-1" required
+                 appTooltip="TOOLTIP_EMAIL">
+        </div>
+      </div>
+
+      <!-- Seguridad (cambio de contraseña) -->
+      <div class="bg-white shadow rounded p-6">
+        <h3 class="text-lg font-semibold border-b pb-2 mb-4">{{ 'SEGURIDAD_Y_ACCESO' | translate }}</h3>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">{{ 'CONTRASENA_ACTUAL' | translate }}</label>
+          <input type="password" [(ngModel)]="passwordActual" name="passwordActual" 
+                 class="w-full border p-2 rounded mt-1"
+                 appTooltip="TOOLTIP_CONTRASENA_ACTUAL">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">{{ 'NUEVA_CONTRASENA' | translate }}</label>
+          <input type="password" [(ngModel)]="nuevaPassword" name="nuevaPassword" 
+                 class="w-full border p-2 rounded mt-1"
+                 appTooltip="TOOLTIP_NUEVA_CONTRASENA">
+        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          {{ 'GUARDAR_CAMBIOS' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="activeTab === 'privacidad'">
+    <div class="bg-white shadow rounded p-6 space-y-6">
+      <div>
+        <h3 class="text-lg font-semibold mb-2">{{ 'EXPORTAR_DATOS' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-3">{{ 'EXPORTAR_DESCRIPCION' | translate }}</p>
+        <button (click)="exportarDatos()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          {{ 'EXPORTAR_BOTON' | translate }}
+        </button>
+      </div>
+      <div class="border-t pt-4">
+        <h3 class="text-lg font-semibold mb-2 text-red-600">{{ 'ELIMINAR_CUENTA' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-3">{{ 'ELIMINAR_DESCRIPCION' | translate }}</p>
+        <button (click)="eliminarCuenta()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+          {{ 'ELIMINAR_BOTON' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

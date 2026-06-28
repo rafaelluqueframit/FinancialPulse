@@ -1,0 +1,48 @@
+<div *ngIf="historial.length > 0" class="text-sm text-gray-500 mb-3">
+  {{ 'PERIODO' | translate }}: {{ formatFecha(fechaInicio) }} - {{ formatFecha(fechaFin) }}
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+  <div class="bg-blue-50 shadow rounded-lg p-4 border border-blue-100">
+    <p class="text-sm text-blue-600 font-medium">{{ 'APERTURA' | translate }}</p>
+    <p class="text-xl font-bold text-gray-800">{{ apertura | number:'1.2-2' }} {{ moneda }}</p>
+  </div>
+
+  <div class="bg-green-50 shadow rounded-lg p-4 border border-green-100">
+    <p class="text-sm text-green-600 font-medium">{{ 'MAXIMO' | translate }}</p>
+    <p class="text-xl font-bold text-gray-800">{{ maximo | number:'1.2-2' }} {{ moneda }}</p>
+  </div>
+
+  <div class="bg-yellow-50 shadow rounded-lg p-4 border border-yellow-100">
+    <p class="text-sm text-yellow-600 font-medium">{{ 'MINIMO' | translate }}</p>
+    <p class="text-xl font-bold text-gray-800">{{ minimo | number:'1.2-2' }} {{ moneda }}</p>
+  </div>
+
+  <div class="shadow rounded-lg p-4 border"
+       [ngClass]="{
+         'bg-red-50 border-red-100': variacion < 0,
+         'bg-green-50 border-green-100': variacion >= 0
+       }">
+    <p class="text-sm font-medium"
+       [ngClass]="{
+         'text-red-600': variacion < 0,
+         'text-green-600': variacion >= 0
+       }">
+      {{ 'VARIACION' | translate }}
+    </p>
+    <p class="text-xl font-bold"
+       [ngClass]="{
+         'text-red-600': variacion < 0,
+         'text-green-600': variacion >= 0
+       }">
+      {{ variacion | number:'1.2-2' }} {{ moneda }}
+    </p>
+    <p class="text-sm"
+       [ngClass]="{
+         'text-red-600': variacion < 0,
+         'text-green-600': variacion >= 0
+       }">
+      ({{ variacionPorcentaje | number:'1.2-2' }}%)
+    </p>
+  </div>
+</div>

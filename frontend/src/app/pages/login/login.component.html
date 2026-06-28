@@ -1,0 +1,21 @@
+<div class="p-4 max-w-md mx-auto">
+  <h2 class="text-2xl font-bold mb-4">{{ 'INICIAR_SESION' | translate }}</h2>
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+    {{ error }}
+  </div>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label class="block text-gray-700">{{ 'EMAIL' | translate }}</label>
+      <input type="email" [(ngModel)]="email" name="email" class="w-full border p-2 rounded" required>
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700">{{ 'CONTRASENA' | translate }}</label>
+      <input type="password" [(ngModel)]="password" name="password" class="w-full border p-2 rounded" required>
+    </div>
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full">{{ 'ENTRAR' | translate }}</button>
+    <p class="text-center mt-2">
+      <a routerLink="/forgot-password" class="text-sm text-blue-600">{{ 'OLVIDE_CONTRASENA' | translate }}</a>
+    </p>
+    <p class="mt-4 text-center">{{ 'NO_TIENES_CUENTA' | translate }} <a routerLink="/register" class="text-blue-600">{{ 'REGISTRATE' | translate }}</a></p>
+  </form>
+</div>

@@ -1,0 +1,41 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">{{ 'FAVORITOS' | translate }}</h1>
+
+  <div *ngIf="loading" class="text-center py-12">
+    <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full border-blue-600 border-t-transparent"></div>
+    <p class="mt-2">{{ 'CARGANDO' | translate }}</p>
+  </div>
+
+  <div *ngIf="!loading && favoritosData.length === 0" class="text-center py-12 bg-gray-50 rounded-lg">
+    <p class="text-gray-500">{{ 'NO_FAVORITOS' | translate }}</p>
+    <a routerLink="/buscar" class="inline-block mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+      {{ 'BUSCAR_ACTIVOS' | translate }}
+    </a>
+  </div>
+
+  <div *ngIf="!loading && favoritosData.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let item of favoritosData" class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+      <div class="p-6">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 class="text-xl font-bold">{{ item.nombre }}</h3>
+            <p class="text-gray-500">{{ item.simbolo }}</p>
+          </div>
+          <button (click)="eliminarFavorito(item.simbolo)" class="text-red-500 hover:text-red-700 transition" title="{{ 'ELIMINAR' | translate }}">
+            🗑️
+          </button>
+        </div>
+        <div class="mt-4">
+          <p class="text-2xl font-bold">{{ item.precio | number:'1.2-2' }} {{ item.moneda }}</p>
+          <p [ngClass]="{'text-green-600': item.cambio >= 0, 'text-red-600': item.cambio < 0}" class="font-medium">
+            {{ item.cambio > 0 ? '+' : '' }}{{ item.cambio | number:'1.2-2' }} 
+            ({{ item.cambioPorcentaje > 0 ? '+' : '' }}{{ item.cambioPorcentaje | number:'1.2-2' }}%)
+          </p>
+        </div>
+        <div class="mt-4">
+          <a [routerLink]="['/dashboard', item.simbolo]" class="text-blue-600 hover:underline">{{ 'VER_DETALLE' | translate }} →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

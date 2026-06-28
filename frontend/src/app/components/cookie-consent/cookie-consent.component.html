@@ -1,0 +1,16 @@
+<div *ngIf="showBanner" class="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 text-white shadow-lg">
+  <div class="container mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <p class="text-sm text-center sm:text-left">
+      {{ 'COOKIES_BANNER_TEXTO' | translate }}
+      <a routerLink="/cookies" class="text-blue-400 underline ml-1 hover:text-blue-300">{{ 'COOKIES_MAS_INFO' | translate }}</a>
+    </p>
+    <div class="flex gap-2">
+      <button (click)="aceptarCookies()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm transition-colors">
+        {{ 'COOKIES_ACEPTAR' | translate }}
+      </button>
+      <button (click)="rechazarCookies()" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-sm transition-colors">
+        {{ 'COOKIES_RECHAZAR' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

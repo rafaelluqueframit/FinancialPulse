@@ -1,0 +1,286 @@
+<div class="p-4 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4">{{ 'MI_CARTERA_VIRTUAL' | translate }}</h2>
+
+  <!-- Tabs -->
+  <div class="border-b border-gray-200 mb-6">
+    <nav class="-mb-px flex space-x-8">
+      <button (click)="activeTab = 'resumen'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'resumen'"
+              [class.text-blue-600]="activeTab === 'resumen'"
+              [class.text-gray-500]="activeTab !== 'resumen'"
+              appTooltip="TOOLTIP_CARTERA_RESUMEN">
+        {{ 'RESUMEN' | translate }}
+      </button>
+      <button (click)="activeTab = 'comprar'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'comprar'"
+              [class.text-blue-600]="activeTab === 'comprar'"
+              [class.text-gray-500]="activeTab !== 'comprar'"
+              appTooltip="TOOLTIP_COMPRAR">
+        {{ 'COMPRAR' | translate }}
+      </button>
+      <button (click)="activeTab = 'vender'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'vender'"
+              [class.text-blue-600]="activeTab === 'vender'"
+              [class.text-gray-500]="activeTab !== 'vender'"
+              appTooltip="TOOLTIP_VENDER">
+        {{ 'VENDER' | translate }}
+      </button>
+      <button (click)="activeTab = 'transacciones'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'transacciones'"
+              [class.text-blue-600]="activeTab === 'transacciones'"
+              [class.text-gray-500]="activeTab !== 'transacciones'"
+              appTooltip="TOOLTIP_TRANSACCIONES">
+        {{ 'HISTORIAL_TRANSACCIONES' | translate }}
+      </button>
+      <button (click)="activeTab = 'evolucion'"
+              class="py-2 px-1 border-b-2 font-medium text-sm transition-colors"
+              [class.border-blue-500]="activeTab === 'evolucion'"
+              [class.text-blue-600]="activeTab === 'evolucion'"
+              [class.text-gray-500]="activeTab !== 'evolucion'"
+              appTooltip="TOOLTIP_EVOLUCION">
+        {{ 'EVOLUCION' | translate }}
+      </button>
+    </nav>
+  </div>
+
+  <!-- Contenido según pestaña -->
+  <div *ngIf="loading" class="text-center py-8">{{ 'CARGANDO' | translate }}</div>
+
+  <div *ngIf="!loading">
+    <!-- Resumen -->
+    <div *ngIf="activeTab === 'resumen'">
+    <div class="bg-white shadow rounded p-4 mb-6" appTooltip="TOOLTIP_CARTERA_SALDO">
+        <p class="text-xl">{{ 'SALDO_DISPONIBLE' | translate }}: <span class="font-bold">{{ saldo | currency:'USD':'symbol':'1.2-2' }}</span></p>
+        <p class="text-xl mt-2">{{ 'VALOR_ACCIONES' | translate }}: <span class="font-bold">{{ valorAcciones | currency:'USD':'symbol':'1.2-2' }}</span></p>
+        <p class="text-xl mt-2">{{ 'VALOR_TOTAL' | translate }}: <span class="font-bold">{{ valorTotal | currency:'USD':'symbol':'1.2-2' }}</span></p>
+        <!-- Opcional: rendimiento no realizado -->
+        <div *ngIf="rendimientoNoRealizado !== 0" class="mt-2">
+        <p class="text-sm">{{ 'RENDIMIENTO_NO_REALIZADO' | translate }}: 
+            <span [ngClass]="{'text-green-600': rendimientoNoRealizado > 0, 'text-red-600': rendimientoNoRealizado < 0}">
+            {{ rendimientoNoRealizado | number:'1.2-2' }}%
+            </span>
+        </p>
+        </div>
+    </div>
+
+    <!-- Gráfico de distribución simple (opcional) -->
+    <div class="bg-white shadow rounded p-4 mb-6" *ngIf="valorAcciones > 0">
+        <h3 class="text-lg font-semibold mb-2">{{ 'COMPOSICION_CARTERA' | translate }}</h3>
+        <div echarts [options]="pieChartOption" class="w-full h-64"></div>
+    </div>
+
+    <!-- Mis acciones -->
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ 'MIS_ACCIONES' | translate }}</h3>
+        <div *ngIf="!tienePosicion" class="text-gray-500">{{ 'NO_ACCIONES_CARTERA' | translate }}</div>
+        <div class="overflow-x-auto" *ngIf="tienePosicion">
+            <table class="min-w-full">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-4 py-2">{{ 'SIMBOLO' | translate }}</th>
+                    <th class="px-4 py-2">{{ 'CANTIDAD' | translate }}</th>
+                    <th class="px-4 py-2">{{ 'PRECIO_ACTUAL' | translate }}</th>
+                    <th class="px-4 py-2">{{ 'VALOR' | translate }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let acc of accionesList" class="border-t">
+                    <td class="px-4 py-2">{{ acc.simbolo }}</td>
+                    <td class="px-4 py-2">{{ acc.cantidad }}</td>
+                    <td class="px-4 py-2">
+                    {{ acc.precioActual | currency:'USD':'symbol':'1.2-2' }}
+                    <span class="cursor-help" appTooltip="TOOLTIP_PRECIO_ACTUAL">ⓘ</span>
+                    </td>
+                    <td class="px-4 py-2">{{ acc.valor | currency:'USD':'symbol':'1.2-2' }}</td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+    </div>
+
+    <!-- Últimas transacciones -->
+    <div class="bg-white shadow rounded p-4 mt-6" *ngIf="ultimasTransacciones.length > 0">
+        <h3 class="text-lg font-semibold mb-2">{{ 'ULTIMAS_TRANSACCIONES' | translate }}</h3>
+        <div class="space-y-2">
+        <div *ngFor="let t of ultimasTransacciones" class="border-b pb-2">
+            <p class="text-sm">
+            <span class="font-medium">{{ t.fecha | date:'short' }}</span> - 
+            {{ t.tipo | translate }} {{ t.cantidad }} {{ 'ACCIONES' | translate }} de {{ t.simbolo }} 
+            por {{ t.precio | currency:'USD':'symbol':'1.2-2' }}
+            </p>
+        </div>
+        </div>
+    </div>
+
+    <!-- Enlaces rápidos -->
+    <div class="flex justify-center space-x-4 mt-6">
+        <button (click)="activeTab = 'comprar'" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        {{ 'COMPRAR_ACCIONES' | translate }}
+        </button>
+        <button (click)="activeTab = 'vender'" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" [disabled]="!tienePosicion">
+        {{ 'VENDER_ACCIONES' | translate }}
+        </button>
+    </div>
+    </div>
+
+    <!-- Comprar -->
+    <div *ngIf="activeTab === 'comprar'">
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ 'COMPRAR_ACCIONES' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-4">{{ 'COMPRAR_EXPLICACION' | translate }}</p>
+        <div class="space-y-4">
+        <!-- Búsqueda de símbolo con autocompletado -->
+        <div class="relative">
+            <input type="text"
+                [(ngModel)]="simboloCompraInput"
+                (input)="buscarSimbolosCompra($event)"
+                (focus)="showDropdownCompra = true"
+                (blur)="cerrarDropdownCompra()"
+                [placeholder]="'BUSCAR_ACTIVO' | translate"
+                class="w-full border p-2 rounded">
+            <div *ngIf="showDropdownCompra && resultadosCompra.length > 0"
+                class="absolute z-10 bg-white border rounded shadow-lg mt-1 w-full max-h-60 overflow-y-auto">
+            <div *ngFor="let r of resultadosCompra"
+                class="p-2 hover:bg-gray-100 cursor-pointer"
+                (mousedown)="seleccionarSimboloCompra(r.simbolo)">
+                <span class="font-bold">{{ r.simbolo }}</span> - <span class="text-sm">{{ r.nombre }}</span>
+            </div>
+            </div>
+        </div>
+        <!-- Precio automático -->
+        <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-700">{{ 'PRECIO_ACTUAL_AUTO' | translate }}</label>
+        <div class="bg-gray-100 p-2 rounded">
+            {{ precioCompra | currency:'USD':'symbol':'1.2-2' }}
+        </div>
+        <p class="text-xs text-gray-500" *ngIf="precioCompra === 0 && simboloCompraInput">{{ 'PRECIO_CARGANDO' | translate }}</p>
+        </div>
+        <!-- Cantidad -->
+        <div class="flex flex-col space-y-1">
+            <label class="text-sm font-medium text-gray-700">{{ 'CANTIDAD' | translate }}</label>
+            <input type="number" [(ngModel)]="cantidadCompra" class="w-full border p-2 rounded" min="1" step="1">
+        </div>
+        <!-- Coste total estimado -->
+        <div class="bg-gray-50 p-2 rounded">
+            <p class="text-sm font-medium">{{ 'COSTE_TOTAL' | translate }}: <span class="font-bold">{{ (cantidadCompra * precioCompra) | currency:'USD':'symbol':'1.2-2' }}</span></p>
+            <p class="text-xs text-gray-500">{{ 'SALDO_DISPONIBLE' | translate }}: {{ saldo | currency:'USD':'symbol':'1.2-2' }}</p>
+        </div>
+        <!-- <button (click)="comprar()" class="bg-blue-600 text-white px-4 py-2 rounded w-full" appTooltip="TOOLTIP_COMPRAR_BOTON">
+            {{ 'COMPRAR' | translate }}
+        </button> -->
+        <button (click)="comprar()" 
+                class="bg-blue-600 text-white px-4 py-2 rounded w-full" 
+                [disabled]="saldoInsuficiente"
+                [class.opacity-50]="saldoInsuficiente">
+        {{ 'COMPRAR' | translate }}
+        </button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Vender -->
+    <div *ngIf="activeTab === 'vender'">
+    <div class="bg-white shadow rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ 'VENDER_ACCIONES' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-4">{{ 'VENDER_EXPLICACION' | translate }}</p>
+        <div class="space-y-4">
+        <!-- Búsqueda de símbolo con autocompletado -->
+        <div class="relative">
+            <input type="text"
+                [(ngModel)]="simboloVentaInput"
+                (input)="buscarSimbolosVenta($event)"
+                (focus)="showDropdownVenta = true"
+                (blur)="cerrarDropdownVenta()"
+                [placeholder]="'BUSCAR_ACTIVO' | translate"
+                class="w-full border p-2 rounded">
+            <div *ngIf="showDropdownVenta && resultadosVenta.length > 0"
+                class="absolute z-10 bg-white border rounded shadow-lg mt-1 w-full max-h-60 overflow-y-auto">
+            <div *ngFor="let r of resultadosVenta"
+                class="p-2 hover:bg-gray-100 cursor-pointer"
+                (mousedown)="seleccionarSimboloVenta(r.simbolo)">
+                <span class="font-bold">{{ r.simbolo }}</span> - <span class="text-sm">{{ r.nombre }}</span>
+            </div>
+            </div>
+        </div>
+        <!-- Precio automático -->
+        <div class="flex flex-col space-y-1">
+        <label class="text-sm font-medium text-gray-700">{{ 'PRECIO_ACTUAL_AUTO' | translate }}</label>
+        <div class="bg-gray-100 p-2 rounded">
+            {{ precioVenta | currency:'USD':'symbol':'1.2-2' }}
+        </div>
+        <p class="text-xs text-gray-500" *ngIf="precioVenta === 0 && simboloVentaInput">{{ 'PRECIO_CARGANDO' | translate }}</p>
+        </div>
+        <!-- Cantidad -->
+        <div class="flex flex-col space-y-1">
+            <label class="text-sm font-medium text-gray-700">{{ 'CANTIDAD' | translate }}</label>
+            <input type="number" [(ngModel)]="cantidadVenta" class="w-full border p-2 rounded" min="1" step="1">
+        </div>
+        <!-- Ingreso estimado -->
+        <div class="bg-gray-50 p-2 rounded">
+            <p class="text-sm font-medium">{{ 'INGRESO_TOTAL' | translate }}: <span class="font-bold">{{ (cantidadVenta * precioVenta) | currency:'USD':'symbol':'1.2-2' }}</span></p>
+            <!-- Mostrar acciones disponibles -->
+            <p class="text-xs text-gray-500" *ngIf="simboloVentaInput">Acciones disponibles: {{ posicion[simboloVentaInput] || 0 }}</p>
+        </div>
+        <!-- <button (click)="vender()" class="bg-green-600 text-white px-4 py-2 rounded w-full" appTooltip="TOOLTIP_VENDER_BOTON">
+            {{ 'VENDER' | translate }}
+        </button> -->
+        <button (click)="vender()" 
+                class="bg-green-600 text-white px-4 py-2 rounded w-full" 
+                [disabled]="!accionesDisponiblesParaVenta"
+                [class.opacity-50]="!accionesDisponiblesParaVenta">
+        {{ 'VENDER' | translate }}
+        </button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Transacciones -->
+    <div *ngIf="activeTab === 'transacciones'">
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ 'HISTORIAL_TRANSACCIONES' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-4" appTooltip="TOOLTIP_TRANSACCIONES_EXPLICACION">{{ 'TRANSACCIONES_EXPLICACION' | translate }}</p>
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="px-4 py-2">{{ 'FECHA' | translate }}</th>
+                <th class="px-4 py-2">{{ 'SIMBOLO' | translate }}</th>
+                <th class="px-4 py-2">{{ 'TIPO' | translate }}</th>
+                <th class="px-4 py-2">{{ 'CANTIDAD' | translate }}</th>
+                <th class="px-4 py-2">{{ 'PRECIO' | translate }}</th>
+                <th class="px-4 py-2">{{ 'TOTAL' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let t of transacciones" class="border-t">
+                <td class="px-4 py-2">{{ t.fecha | date:'short' }}</td>
+                <td class="px-4 py-2">{{ t.simbolo }}</td>
+                <td class="px-4 py-2 capitalize">{{ t.tipo }}</td>
+                <td class="px-4 py-2">{{ t.cantidad }}</td>
+                <td class="px-4 py-2">{{ t.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+                <td class="px-4 py-2">{{ t.cantidad * t.precio | currency:'USD':'symbol':'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evolución (gráfico) -->
+    <div *ngIf="activeTab === 'evolucion'">
+      <div class="bg-white shadow rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">{{ 'EVOLUCION_CARTERA' | translate }}</h3>
+        <p class="text-sm text-gray-600 mb-4" appTooltip="TOOLTIP_EVOLUCION_EXPLICACION">{{ 'EVOLUCION_EXPLICACION' | translate }}</p>
+        <div echarts [options]="evolucionChartOption" class="w-full h-96"></div>
+      </div>
+    </div>
+
+    <!-- Mensajes globales -->
+    <div *ngIf="mensaje" class="bg-green-100 text-green-700 p-2 rounded mb-4">{{ mensaje }}</div>
+    <div *ngIf="error" class="bg-red-100 text-red-700 p-2 rounded mb-4">{{ error }}</div>
+  </div>
+</div>

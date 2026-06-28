@@ -1,0 +1,84 @@
+<section class="relative bg-gradient-to-r from-blue-600 to-indigo-700 text-white overflow-hidden">
+  <div class="absolute inset-0 bg-black opacity-20"></div>
+  <div class="container mx-auto px-4 py-24 md:py-32 relative z-10 text-center">
+    <img src="assets/logo.svg" alt="FinancialPulse" class="h-24 md:h-32 mx-auto mb-6">
+    <p class="text-xl md:text-2xl mb-8 animate-fade-in-up">{{ 'MARKET_HEARTBEAT' | translate }}</p>
+    <p class="text-xl md:text-2xl mb-8 animate-fade-in-up">{{ 'Slogan' | translate }}</p>
+    <a routerLink="/buscar" class="inline-block bg-white text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-lg">
+      {{ 'COMENZAR_AHORA' | translate }}
+    </a>
+  </div>
+  <div class="absolute bottom-0 w-full">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="relative block w-full h-12 md:h-20">
+      <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-white"></path>
+    </svg>
+  </div>
+</section>
+
+<h2 class="text-3xl font-bold text-center mb-12">{{ 'CARACTERISTICAS_PRINCIPALES' | translate }}</h2>
+<div class="grid md:grid-cols-3 gap-8">
+  <div class="group bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+    <div class="text-5xl mb-4 group-hover:scale-110 transition inline-block">📊</div>
+    <h3 class="text-xl font-semibold mb-2">{{ 'DATOS_HISTORICOS' | translate }}</h3>
+    <p class="text-gray-600">{{ 'DATOS_HISTORICOS_DESC' | translate }}</p>
+  </div>
+  <div class="group bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+    <div class="text-5xl mb-4 group-hover:scale-110 transition inline-block">🔮</div>
+    <h3 class="text-xl font-semibold mb-2">{{ 'PREDICCIONES' | translate }}</h3>
+    <p class="text-gray-600">{{ 'PREDICCIONES_DESC' | translate }}</p>
+  </div>
+  <div class="group bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+    <div class="text-5xl mb-4 group-hover:scale-110 transition inline-block">📰</div>
+    <h3 class="text-xl font-semibold mb-2">{{ 'ANALISIS_SENTIMIENTO' | translate }}</h3>
+    <p class="text-gray-600">{{ 'ANALISIS_SENTIMIENTO_DESC' | translate }}</p>
+  </div>
+</div>
+
+<div class="container mx-auto px-4 py-12">
+  <div class="mb-16">
+    <h2 class="text-3xl font-bold text-center mb-8">{{ 'RESUMEN_MERCADO' | translate }}</h2>
+    <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div *ngFor="let _ of [1,2,3,4]" class="bg-gray-100 rounded-xl p-6 animate-pulse">
+        <div class="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
+        <div class="h-8 bg-gray-300 rounded w-1/2 mb-2"></div>
+        <div class="h-5 bg-gray-300 rounded w-2/3"></div>
+      </div>
+    </div>
+    <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div *ngFor="let index of marketData" class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl">
+        <div class="p-6">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-800">{{ index.nombre }}</h3>
+              <p class="text-sm text-gray-500">{{ index.simbolo }}</p>
+            </div>
+            <div class="text-2xl">📈</div>
+          </div>
+          <div class="mt-4">
+            <p class="text-2xl font-bold">{{ index.precio | number:'1.2-2' }}</p>
+            <p class="text-sm font-medium" [ngClass]="{'text-green-600': index.cambio >= 0, 'text-red-600': index.cambio < 0}">
+              <span>{{ index.cambio > 0 ? '+' : '' }}{{ index.cambio | number:'1.2-2' }}</span>
+              <span class="ml-1">({{ index.cambio_porcentaje > 0 ? '+' : '' }}{{ index.cambio_porcentaje | number:'1.2-2' }}%)</span>
+            </p>
+          </div>
+        </div>
+        <div class="h-1" [ngClass]="{'bg-green-500': index.cambio >= 0, 'bg-red-500': index.cambio < 0}"></div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoggedIn" class="mt-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl p-8 text-white text-center shadow-xl">
+    <h2 class="text-3xl font-bold mb-2">{{ 'TU_CARTERA_VIRTUAL' | translate }}</h2>
+    <p class="text-lg mb-4">{{ 'SIMULA_INVERSIONES' | translate }}</p>
+    <a routerLink="/cartera" class="inline-block bg-white text-green-600 px-6 py-2 rounded-full font-semibold hover:bg-gray-100 transition shadow">
+      {{ 'IR_A_MI_CARTERA' | translate }}
+    </a>
+  </div>
+
+  <div class="mt-20 text-center">
+    <h2 class="text-2xl font-bold mb-4">{{ 'LISTO_PARA_EMPEZAR' | translate }}</h2>
+    <a routerLink="/buscar" class="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-blue-700 transition transform hover:scale-105 inline-block shadow-lg">
+      {{ 'BUSCAR_ACTIVOS' | translate }}
+    </a>
+  </div>
+</div>
